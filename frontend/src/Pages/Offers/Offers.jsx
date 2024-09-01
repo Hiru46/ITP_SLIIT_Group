@@ -188,8 +188,6 @@ function Offers(){
                     </div>
                 </div>
 
-
-
             </div>
 
 
