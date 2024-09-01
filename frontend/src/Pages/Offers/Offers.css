@@ -1,0 +1,21 @@
+.offer-frame
+{
+
+    margin-left: 100px;
+    margin-bottom: 100px;
+    display:grid;
+    grid-template-columns: 1fr 1fr; 
+    column-gap:20px;
+    width:1020px;
+}
+
+.offer-frame .offer-image
+{
+    height:100%;
+    width: 100%;
+}
+.offer-frame .offer-details
+{
+    height:100%;
+    width: 100%;
+}
