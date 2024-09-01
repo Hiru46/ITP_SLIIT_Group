@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 
 function HomeNavbar() {
     return (
-        <div className=" h-[25vh] ">
+        <div className=" h-fit mb-14">
             {/* Header Section */}
             <div className="z-40 absolute w-[280px] h-[132px] bg-[#006AFF] angled-rectangle1">
                 <h1 className="text-white font-bold text-6xl absolute top-[48px] left-[38px]">

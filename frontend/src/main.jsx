@@ -16,8 +16,14 @@ import Login from './Pages/Login/Login.jsx';
 import Register from './Pages/Register/Register.jsx';
 import ForgotPassword from './Pages/ForgotPassword/ForgotPassword.jsx';
 import ChangePassword from './Pages/ChangePassword/ChangePassword.jsx';
+<<<<<<< HEAD
 import StoreNavbar from './Pages/../components/NavBar/StoreNavbar.jsx';
 import Offers from './Pages/Offers/Offers.jsx';
+=======
+import StoreNavbar from './components/NavBar/StoreNavbar.jsx';
+import Packages from './Pages/CustomerSide/ServicePackages/Packages.jsx'
+import PackageDetails from './Pages/CustomerSide/ServicePackages/PackageDetails.jsx'
+>>>>>>> master
 
 const router = createBrowserRouter([
 
@@ -52,10 +58,20 @@ const router = createBrowserRouter([
     element: <StoreNavbar />,
   },
   {
+<<<<<<< HEAD
     path:"/Offers",
     element:<Offers/>
   },
 
+=======
+    path: "/packages",
+    element: <Packages />,
+  },
+  {
+    path: "/packages/:id",
+    element: <PackageDetails />,
+  },
+>>>>>>> master
 
 
 
