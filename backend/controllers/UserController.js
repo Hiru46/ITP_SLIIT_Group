@@ -53,7 +53,7 @@ const getById = async (req, res, next) => {
         return res.status(400).json({ message: "User not found" });
     }
 
-    // Display all users
+    // Display the  user
 
     return res.status(200).json({ user });
 };

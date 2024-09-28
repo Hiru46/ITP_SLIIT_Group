@@ -4,6 +4,8 @@ import Header from '../../../components/Dashboards/Header';
 import SideNavLinks from '../../../components/Dashboards/SideNavLinks/SideNavLinks';
 import axios from 'axios';
 import DisplayCustomer_Details from '../ManageCustomers/DisplayCustomer_Details';
+import { Link } from 'react-router-dom';
+
 
 function Customer_Details() {
   const [users, setUsers] = useState([]);
@@ -57,13 +59,15 @@ function Customer_Details() {
           <div className="h-5/6 m-5 px-6 pt-6 bg-gray-50 border-2 border-solid border-gray-300">
             <div>
               <button className="w-1/2 px-4 py-2 bg-gray-700 text-white font-semibold shadow-md">
-                <SideNavLinks linkName="Registered Customers" url="/cus_details" />
+                Registered Customers
 
 
               </button>
-              <button className="w-1/2 px-4 py-2 bg-gray-500 text-white font-semibold shadow-md hover:bg-gray-600 hover:duration-300">
-                <SideNavLinks linkName="Add Customers" url="/cus_Add" />
-              </button>
+              <Link to="/cus_Add">
+                <button className="w-1/2 px-4 py-2 bg-gray-500 text-white font-semibold shadow-md hover:bg-gray-600 hover:duration-300">
+                  Add Customers
+                </button>
+              </Link>
             </div>
             <div className="mt-5 h-[470px] overflow-y-scroll bg-gray-100 border-2 border-solid border-gray-300">
               <table className="min-w-full bg-white border-2 border-gray-300 rounded-lg">

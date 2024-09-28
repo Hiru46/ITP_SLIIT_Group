@@ -8,16 +8,20 @@ import PackageSection from './Pages/Home/PackageSection'
 
 function App() {
     return (
-        <div>
 
 
-            <HomeNavbar />
-            <HeroSection />
 
+        <div  >
+
+            <div className='h-screen'>
+                <HomeNavbar />
+                <HeroSection />
+            </div>
             <AboutSection />
             <PackageSection />
             <Offer />
             <Footer />
+
 
 
         </div >

@@ -9,9 +9,12 @@ import { FaLinkedinIn } from "react-icons/fa6";
 import { FaGoogle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
+
+
+
 function HomeNavbar() {
     return (
-        <div className=" h-fit mb-14">
+        <div className=" h-fit mb-14 scroll-smooth">
             {/* Header Section */}
             <div className="z-40 absolute w-[280px] h-[132px] bg-[#006AFF] angled-rectangle1">
                 <img src="Logo3.png" alt="" className="bg-cover bg-center " />
@@ -86,12 +89,12 @@ function HomeNavbar() {
 
             <div className="bg-[#111827]   h-[55px] relative top-[55px] right-0 left-0 flex items-center border-b-white border-t-2">
                 <ul className="text-white font-semibold gap-14 relative left-[110px] flex items-center">
-                    <li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">HOME</li>
-                    <li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">ABOUT US</li>
-                    <li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">SERVICES</li>
-                    <li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">OFFER</li>
-                    <li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">RECOVERY</li>
-                    <li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">CONTACT US</li>
+                    <a href=""><li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">HOME</li></a>
+                    <a href="#AboutSection"><li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">ABOUT US</li></a>
+                    <a href="#PackageSection"><li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">SERVICES</li></a>
+                    <a href="#Offer"><li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">OFFER</li></a>
+                    <a href=""><li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">RECOVERY</li></a>
+                    <Link to="/HomeContactUs"> <li className="hover:text-[#006AFF] transition duration-200 cursor-pointer">CONTACT US</li></Link>
 
                     {/* Buttons with original positions */}
 
@@ -106,10 +109,10 @@ function HomeNavbar() {
             </div>
 
 
-
-
-
         </div>
+
+
+
     )
 }
 

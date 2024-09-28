@@ -20,16 +20,21 @@ function Login() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ email, password }),
+                credentials: 'include' // Include credentials (cookies)
             });
 
             const data = await response.json();
 
             if (data.status === "ok") {
+                // Store the JWT token in localStorage
+                localStorage.setItem("token", data.token);
+
+                // Navigate based on user role
                 if (data.role === "admin") {
                     navigate("/Dashboard"); // Navigate to admin dashboard
                 } else if (data.role === "customer") {
-                    navigate("/Dashboard"); // Navigate to customer profile
+                    navigate("/Profile"); // Navigate to customer profile
                 }
             } else {
                 setErrorMessage(data.error || "An error occurred. Please try again.");
@@ -43,7 +48,7 @@ function Login() {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row w-full h-screen bg-gradient-to-br from-[#f0f4ff] to-[#d0eaff] ">
+        <div className="flex flex-col lg:flex-row w-full h-screen bg-gradient-to-br from-[#f0f4ff] to-[#d0eaff]">
             {/* Left side with image */}
             <div className="relative w-full lg:w-1/2 h-1/2 lg:h-full">
                 <img
@@ -51,14 +56,12 @@ function Login() {
                     alt="Login Concept"
                     className="absolute inset-0 w-full h-full object-cover bg-cover bg-center bg-no-repeat"
                 />
-
-
             </div>
 
             {/* Right side with login form */}
-            <div className="flex items-center justify-center w-full lg:w-1/2 p-6 lg:p-12  ">
+            <div className="flex items-center justify-center w-full lg:w-1/2 p-6 lg:p-12">
                 <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-2xl border border-gray-200 bg-opacity-80">
-                    <h1 className="text-3xl font-bold mb-6 text-center text-gray-800   py-2 ">LOGIN</h1>
+                    <h1 className="text-3xl font-bold mb-6 text-center text-gray-800 py-2">LOGIN</h1>
 
                     {/* Display error message */}
                     {errorMessage && (

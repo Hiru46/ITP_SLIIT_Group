@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
 import SideNavBar from '../../../components/Dashboards/SideNavBar';
 import Header from '../../../components/Dashboards/Header';
-import SideNavLinks from '../../../components/Dashboards/SideNavLinks/SideNavLinks';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function AddCustomers() {
-    const [imagePreview, setImagePreview] = useState(null);
-    const [imageFile, setImageFile] = useState(null); // New state to store the selected image file
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const [input, setInput] = useState({
@@ -19,25 +16,6 @@ function AddCustomers() {
         Email: "",
         Password: "",
     });
-
-    const handleImageUpload = async () => {
-        if (imageFile) {
-            try {
-                const formData = new FormData();
-                formData.append('image', imageFile); // Ensure 'image' matches the name in your back-end upload route
-                const uploadRes = await axios.post('http://localhost:5000/uploadProfileImage', formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                    },
-                });
-                return uploadRes.data.imageUrl; // Return the image URL
-            } catch (error) {
-                console.error("Error uploading image:", error);
-                return null;
-            }
-        }
-        return null;
-    };
 
     const handleChange = (e) => {
         setInput((prevState) => ({
@@ -81,21 +59,19 @@ function AddCustomers() {
             return response.data.exists;
         } catch (error) {
             console.error("Error checking email:", error);
-            return false; // assume email doesn't exist if there's an error
+            return false;
         }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        // Validate form inputs
         const validationErrors = validate();
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
 
-        // Check if email already exists
         const emailExists = await checkEmailExists(input.Email);
         if (emailExists) {
             setErrors((prevErrors) => ({
@@ -105,10 +81,6 @@ function AddCustomers() {
             return;
         }
 
-        // Upload the image and get the URL
-        const imageUrl = await handleImageUpload();
-
-        // Proceed with form submission
         await sendRequest();
         navigate("/cus_details");
     };
@@ -122,178 +94,65 @@ function AddCustomers() {
             NIC: String(input.NIC),
             Email: String(input.Email),
             Password: String(input.Password),
-            // Do not include ProfileImageUrl here
         });
     };
-
     return (
-        <div className="flex h-screen overflow-hidden">
+        <div className="flex h-screen overflow-hidden bg-gray-100">
             <SideNavBar />
 
             <div className="flex-1 flex flex-col">
                 <Header />
 
-                <main className="flex-1 flex flex-col overflow-auto bg-gray-100">
-                    <div className="mt-10 bg-slate-500 text-center p-3 text-2xl font-bold text-black">
-                        <h1>CUSTOMER DETAILS</h1>
+                <main className="flex-1 flex flex-col overflow-auto p-8">
+                    <div className="bg-gradient-to-r from-gray-700 to-gray-800 text-center p-4 rounded-md shadow-lg">
+                        <h1 className="text-3xl text-white font-bold">Add a Customer</h1>
                     </div>
 
-                    <div className="m-5 p-6 bg-gray-50 border border-gray-300 shadow-lg flex flex-col gap-6">
-                        <div className="flex flex-col sm:flex-row justify-center mb-5">
-                            <button className="w-full sm:w-1/2 px-4 py-2 bg-gray-500 text-white font-semibold shadow-md hover:bg-gray-600 transition duration-300">
-                                <SideNavLinks linkName="Registered Customers" url="/cus_details" />
-                            </button>
-                            <button className="w-full sm:w-1/2 px-4 py-2 bg-gray-700 text-white font-semibold shadow-md hover:bg-gray-600 transition duration-300">
-                                <SideNavLinks linkName="Add Customers" url="/cus_Add" />
-                            </button>
-                        </div>
+                    <div className="mt-5 bg-white border border-gray-300 rounded-lg shadow-lg p-6">
+                        <button
+                            onClick={() => navigate(-1)}
+                            className="mb-8 py-2 px-11 bg-gray-600 text-white font-semibold rounded-md hover:bg-gray-700 transition duration-300"
+                        >
+                            Back
+                        </button>
 
                         <form onSubmit={handleSubmit}>
-                            <div className="flex flex-col items-center">
-                                <div className="relative w-32 h-32 mb-4">
-                                    <input
-                                        type="file"
-                                        id="file-upload"
-                                        className="absolute inset-0 opacity-0 cursor-pointer"
-                                        accept="image/*"
-                                        onChange={(e) => {
-                                            const file = e.target.files[0];
-                                            if (file) {
-                                                setImageFile(file); // Store the selected image file
-                                                const reader = new FileReader();
-                                                reader.onloadend = () => {
-                                                    setImagePreview(reader.result);
-                                                };
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }}
-                                    />
-                                    <label
-                                        htmlFor="file-upload"
-                                        className="flex items-center justify-center w-full h-full bg-gray-200 border-2 border-gray-300 rounded-full cursor-pointer hover:bg-gray-300 transition duration-300"
-                                    >
-                                        {imagePreview ? (
-                                            <img
-                                                src={imagePreview}
-                                                alt="Uploaded Preview"
-                                                className="w-full h-full object-cover rounded-full"
-                                            />
-                                        ) : (
-                                            <svg
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                className="w-12 h-12 text-gray-500"
-                                                fill="none"
-                                                viewBox="0 0 24 24"
-                                                stroke="currentColor"
-                                            >
-                                                <path
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                    strokeWidth={2}
-                                                    d="M5 15l7-7 7 7M12 4v16"
-                                                />
-                                            </svg>
-                                        )}
-                                    </label>
-                                </div>
-                                <label className="block text-gray-700 text-lg mb-2">
-                                    Upload Image
-                                </label>
-                            </div>
-
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-                                <div>
-                                    <label className="block text-gray-700">First Name</label>
-                                    <input
-                                        type="text"
-                                        name="FirstName"
-                                        value={input.FirstName}
-                                        onChange={handleChange}
-                                        className="w-full border p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Enter first name"
-                                    />
-                                    {errors.FirstName && <p className="text-red-500 text-sm">{errors.FirstName}</p>}
-                                </div>
-                                <div>
-                                    <label className="block text-gray-700">Last Name</label>
-                                    <input
-                                        type="text"
-                                        name="LastName"
-                                        value={input.LastName}
-                                        onChange={handleChange}
-                                        className="w-full border p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Enter last name"
-                                    />
-                                    {errors.LastName && <p className="text-red-500 text-sm">{errors.LastName}</p>}
-                                </div>
-                                <div>
-                                    <label className="block text-gray-700">NIC</label>
-                                    <input
-                                        type="text"
-                                        name="NIC"
-                                        value={input.NIC}
-                                        onChange={handleChange}
-                                        className="w-full border p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Enter NIC"
-                                    />
-                                    {errors.NIC && <p className="text-red-500 text-sm">{errors.NIC}</p>}
-                                </div>
-                                <div>
-                                    <label className="block text-gray-700">Mobile Number</label>
-                                    <input
-                                        type="text"
-                                        name="MobileNumber"
-                                        value={input.MobileNumber}
-                                        onChange={handleChange}
-                                        className="w-full border p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Enter mobile number"
-                                    />
-                                    {errors.MobileNumber && <p className="text-red-500 text-sm">{errors.MobileNumber}</p>}
-                                </div>
-                                <div>
-                                    <label className="block text-gray-700">Email</label>
-                                    <input
-                                        type="email"
-                                        name="Email"
-                                        value={input.Email}
-                                        onChange={handleChange}
-                                        className="w-full border p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Enter email"
-                                    />
-                                    {errors.Email && <p className="text-red-500 text-sm">{errors.Email}</p>}
-                                </div>
-                                <div>
-                                    <label className="block text-gray-700">Address</label>
-                                    <input
-                                        type="text"
-                                        name="Address"
-                                        value={input.Address}
-                                        onChange={handleChange}
-                                        className="w-full border p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                        placeholder="Enter address"
-                                    />
-                                    {errors.Address && <p className="text-red-500 text-sm">{errors.Address}</p>}
-                                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                                {['FirstName', 'LastName', 'NIC', 'MobileNumber', 'Email', 'Address'].map((field) => (
+                                    <div key={field}>
+                                        <label className="block text-gray-700 font-semibold">{field.replace(/([A-Z])/g, ' $1')}</label>
+                                        <input
+                                            type={field === 'Email' ? 'email' : 'text'}
+                                            name={field}
+                                            value={input[field]}
+                                            onChange={handleChange}
+                                            className="w-full border border-gray-300 p-3 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+                                            placeholder={`Enter ${field.replace(/([A-Z])/g, ' $1').toLowerCase()}`}
+                                        />
+                                        {errors[field] && <p className="text-red-500 text-sm mt-1">{errors[field]}</p>}
+                                    </div>
+                                ))}
                                 <div className="col-span-2">
-                                    <label className="block text-gray-700">Password</label>
+                                    <label className="block text-gray-700 font-semibold">Password</label>
                                     <input
                                         type="password"
                                         name="Password"
                                         value={input.Password}
                                         onChange={handleChange}
-                                        className="w-full border p-2 mt-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        className="w-full border border-gray-300 p-3 mt-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
                                         placeholder="Enter password"
                                     />
-                                    {errors.Password && <p className="text-red-500 text-sm">{errors.Password}</p>}
+                                    {errors.Password && <p className="text-red-500 text-sm mt-1">{errors.Password}</p>}
                                 </div>
                             </div>
-
-                            <button
-                                type="submit"
-                                className="w-full py-2 bg-blue-500 text-white font-bold rounded hover:bg-blue-600 transition duration-300"
-                            >
-                                Save
-                            </button>
+                            <div className='flex justify-center'>
+                                <button
+                                    type="submit"
+                                    className="mt-4 w-1/4   py-3 bg-blue-600 text-white font-bold rounded-sm hover:bg-blue-700 transition duration-300"
+                                >
+                                    Confirm
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </main>

@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const AdminSchema = new Schema({
+
     name: {
         type: String, // Data type
         required: true, // validate
@@ -16,6 +17,7 @@ const AdminSchema = new Schema({
         type: String, // Data type
         required: true, // validate
     },
+
 });
 
 module.exports = mongoose.model(

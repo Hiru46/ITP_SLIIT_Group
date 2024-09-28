@@ -21,6 +21,13 @@ import Packages from './Pages/CustomerSide/ServicePackages/Packages.jsx'
 import PackageDetails from './Pages/CustomerSide/ServicePackages/PackageDetails.jsx'
 import UpdateCustomers from "./Pages/AdminDashboard/ManageCustomers/UpdateCustomers.jsx"
 import AddCustomers from "./Pages/AdminDashboard/ManageCustomers/AddCustomers.jsx"
+import ContactUs from './Pages/ContactUs/ContactUs.jsx';
+import Profile from './Pages/CustomerSide/CustomerProfile/Profile.jsx';
+import CustomerHeader from './components/CustomerDashboard/CustomerHeader.jsx';
+import CustomerSideBar from './components/CustomerDashboard/CustomerSideBar.jsx';
+import EditProfile from './Pages/CustomerSide/CustomerProfile/EditProfile.jsx';
+import Test from './Test.jsx';
+
 
 
 
@@ -40,6 +47,11 @@ const router = createBrowserRouter([
   {
     path: "/Login",
     element: <Login />,
+  },
+
+  {
+    path: "/HomeContactUs",
+    element: <ContactUs />,
   },
 
   {
@@ -65,6 +77,26 @@ const router = createBrowserRouter([
   {
     path: "/packages/:id",
     element: <PackageDetails />,
+  },
+  {
+    path: "/Test",
+    element: <Test />,
+  },
+  {
+    path: "/Profile",
+    element: <Profile />,
+  },
+  {
+    path: "/CustomerSideBar",
+    element: <CustomerSideBar />,
+  },
+  {
+    path: "/CustomerSideBar",
+    element: <CustomerHeader />,
+  },
+  {
+    path: "/EditProfile",
+    element: <EditProfile />,
   },
 
 

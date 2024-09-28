@@ -7,7 +7,7 @@ import TireRotation from "../../assets/Home/TireRotation.jpg"
 
 function Offer() {
     return (
-        <div className="bg-white min-h-screen w-full flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8">
+        <div className="bg-white min-h-screen w-full flex flex-col justify-center items-center px-4 sm:px-6 lg:px-8" id="Offer">
             <div className="text-center max-w-4xl mx-auto">
                 <h2 className="text-5xl font-extrabold text-black sm:text-6xl lg:text-7xl">
                     Exclusive Deals for Your Vehicle

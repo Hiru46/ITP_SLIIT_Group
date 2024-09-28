@@ -1,105 +1,154 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import CustomerHeader from '../../../components/CustomerDashboard/CustomerHeader';
+import CustomerSideBar from '../../../components/CustomerDashboard/CustomerSideBar';
 
 function Profile() {
-    return (
-        <div className="flex flex-col md:flex-row w-full min-h-screen">
-            {/* Sidebar */}
-            <div className="w-full md:w-1/4 bg-gray-900 text-white p-4 flex flex-col items-center">
-                <img
-                    src="/path-to-image"
-                    alt="User"
-                    className="rounded-full w-32 h-32 object-cover"
-                />
-                <h2 className="mt-4 text-xl font-semibold">MHiRAJ</h2>
-                <p className="text-gray-400">User</p>
-                <nav className="mt-8 space-y-4">
-                    <a href="#" className="block py-2 px-4 bg-gray-800 rounded">
-                        PROFILE
-                    </a>
-                    <a href="#" className="block py-2 px-4 hover:bg-gray-800 rounded">
-                        RECOVERY
-                    </a>
-                    <a href="#" className="block py-2 px-4 hover:bg-gray-800 rounded">
-                        RESERVATIONS
-                    </a>
-                </nav>
-            </div>
+    const [userData, setUserData] = useState(null);
+    const [customerDetails, setCustomerDetails] = useState({
+        user: {
+            FirstName: '',
+            LastName: '',
+            Address: '',
+            MobileNumber: '',
+            NIC: '',
+            Email: '',
+            Password: '',
+        }
+    });
 
-            {/* Profile Details */}
-            <div className="w-full md:w-3/4 p-8">
-                <h1 className="text-3xl font-bold mb-6">Profile</h1>
-                <div className="bg-gray-100 p-6 rounded-lg shadow-md">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center space-x-4">
+    const [password, setPassword] = useState(''); // State for password
+
+    // Fetch session data
+    useEffect(() => {
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/Session');
+                setUserData(response.data);
+                console.log('User data fetched:', response.data);
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        };
+
+        fetchUserData();
+    }, []);
+
+    // Fetch customer details when userData is available
+    useEffect(() => {
+        const fetchCustomerDetails = async () => {
+            if (userData) {
+                const URL = `http://localhost:5000/AdminCustomers/${userData.userId}`;
+                try {
+                    const response = await axios.get(URL);
+                    setCustomerDetails(response.data); // Store the data directly
+                    console.log('Customer details fetched:', response.data);
+                } catch (error) {
+                    console.error('Error fetching customer details:', error);
+                }
+            }
+        };
+
+        fetchCustomerDetails();
+    }, [userData]); // Run when userData changes
+
+    return (
+        <div className="flex h-screen bg-gray-100">
+            <CustomerSideBar />
+            <div className="flex flex-col flex-grow">
+                <CustomerHeader />
+                <div className="p-8 flex-grow">
+                    <h1 className="text-4xl font-bold text-gray-800 mb-8">Profile</h1>
+                    <div className="bg-white shadow-lg rounded-lg p-6">
+                        <div className="flex items-center mb-6">
                             <img
-                                src="/path-to-image"
-                                alt="User"
-                                className="rounded-full w-16 h-16 object-cover"
+                                src="https://www.profilebakery.com/wp-content/uploads/2024/05/Profile-picture-created-with-ai.jpeg"
+                                alt="Profile"
+                                className="w-24 h-24 rounded-full border-2 border-blue-500 mr-4"
                             />
                             <div>
-                                <h2 className="text-2xl font-semibold">MHiRAJ</h2>
-                                <p>User</p>
+                                <h2 className="text-2xl font-semibold text-gray-900 uppercase">
+                                    {customerDetails.user.FirstName} {customerDetails.user.LastName}
+                                </h2>
+                                <span className="text-gray-500">User</span>
+                            </div>
+                            <div className="ml-auto flex space-x-4">
+                                <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition duration-200">
+                                    Edit
+                                </button>
+                                <button className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition duration-200">
+                                    Delete Profile
+                                </button>
                             </div>
                         </div>
-                        <div className="space-x-4">
-                            <button className="bg-blue-500 text-white px-4 py-2 rounded">Edit</button>
-                            <button className="bg-red-500 text-white px-4 py-2 rounded">Delete Profile</button>
-                        </div>
-                    </div>
-                    <form className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block font-semibold mb-1">Name</label>
+
+                        <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div className="col-span-1">
+                                <label className="block text-sm font-medium text-gray-700">Name</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 border border-gray-300 rounded"
-                                    value="Yasas Mihiraj"
-                                    readOnly
+                                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                                    value={`${customerDetails.user.FirstName} ${customerDetails.user.LastName}`}
+                                    disabled
                                 />
                             </div>
-                            <div>
-                                <label className="block font-semibold mb-1">Email Address</label>
+
+                            <div className="col-span-1">
+                                <label className="block text-sm font-medium text-gray-700">Email Address</label>
                                 <input
                                     type="email"
-                                    className="w-full p-2 border border-gray-300 rounded"
-                                    value="Mihiraj69Yasas149@gmail.com"
-                                    readOnly
+                                    value={customerDetails.user.Email}
+                                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                                    disabled
                                 />
                             </div>
-                            <div>
-                                <label className="block font-semibold mb-1">Contact No</label>
+
+                            <div className="col-span-1">
+                                <label className="block text-sm font-medium text-gray-700">Contact No</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 border border-gray-300 rounded"
-                                    value="0772807725"
-                                    readOnly
+                                    value={`0${customerDetails.user.MobileNumber}`}
+
+                                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                                    disabled
                                 />
                             </div>
-                            <div>
-                                <label className="block font-semibold mb-1">NIC Number</label>
+
+                            <div className="col-span-1">
+                                <label className="block text-sm font-medium text-gray-700">NIC Number</label>
                                 <input
                                     type="text"
-                                    className="w-full p-2 border border-gray-300 rounded"
-                                    value="200031243665"
-                                    readOnly
+                                    value={customerDetails.user.NIC}
+                                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                                    disabled
                                 />
                             </div>
-                        </div>
-                        <div>
-                            <label className="block font-semibold mb-1">Address</label>
-                            <textarea
-                                className="w-full p-2 border border-gray-300 rounded"
-                                rows="3"
-                                readOnly
-                            >
-                                KuruduWatta, Colombo 3
-                            </textarea>
-                        </div>
-                    </form>
+
+                            <div className="col-span-2">
+                                <label className="block text-sm font-medium text-gray-700">Address</label>
+                                <textarea
+                                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                                    rows="3"
+                                    value={customerDetails.user.Address}
+                                    disabled
+                                />
+                            </div>
+
+                            <div className="col-span-2">
+                                <label className="block text-sm font-medium text-gray-700">Password</label>
+                                <input
+                                    type="password"
+                                    value={customerDetails.user.Password}
+                                    disabled
+                                    className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-2 focus:ring-blue-500"
+                                />
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    )
+    );
 }
 
-export default Profile
+export default Profile;

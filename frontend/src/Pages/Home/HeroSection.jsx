@@ -30,7 +30,7 @@ export default function HeroSection() {
     ];
 
     return (
-        <div className="relative w-full h-full min-h-[75vh] overflow-hidden">
+        <div className="relative w-full h-full min-h-[75vh] overflow-hidden " id="HeroSection">
             <Carousel
                 showThumbs={false}
                 autoPlay
@@ -48,7 +48,7 @@ export default function HeroSection() {
                                 backgroundRepeat: "no-repeat",
                                 backgroundPosition: "center",
                                 backgroundSize: "cover",
-                                minHeight: "82vh",
+                                minHeight: "76vh",
                             }}
                         >
                             <div className="absolute inset-0 bg-black opacity-50"></div>
