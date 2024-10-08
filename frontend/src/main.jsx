@@ -28,6 +28,13 @@ import CustomerSideBar from './components/CustomerDashboard/CustomerSideBar.jsx'
 import EditProfile from './Pages/CustomerSide/CustomerProfile/EditProfile.jsx';
 import Test from './Test.jsx';
 
+import Offers from './Pages/Offers/Offers.jsx';
+import OffersDashboard from './Pages/AdminDashboard/OffersDashboard/OffersDashboard.jsx';
+import Add_Offer from './Pages/AdminDashboard/OffersDashboard/Add_Offer.jsx';
+import UpdateOffers from './Pages/AdminDashboard/OffersDashboard/UpdateOffers.jsx';
+import ReferralDashboard from './Pages/AdminDashboard/ReferralDashboard/ReferralDashboard.jsx';
+import AddReferral from './Pages/AdminDashboard/ReferralDashboard/AddReferral.jsx';
+import UpdateReferral from './Pages/AdminDashboard/ReferralDashboard/UpdateReferral.jsx';
 
 
 
@@ -79,6 +86,7 @@ const router = createBrowserRouter([
     element: <PackageDetails />,
   },
   {
+
     path: "/Test",
     element: <Test />,
   },
@@ -98,6 +106,16 @@ const router = createBrowserRouter([
     path: "/EditProfile",
     element: <EditProfile />,
   },
+  {
+    path: "/Offers",
+    element: <Offers />,
+  },
+  {
+    path: "/add_offer",
+    element: <Add_Offer />,
+  },
+
+
 
 
 
@@ -129,20 +147,30 @@ const router = createBrowserRouter([
     path: "/cus_Add",
     element: <AddCustomers />,
   },
-
-
-
-
-
-
   {
     path: "/packages/update",
     element: <Update_Package />,
   },
-
-
-
-
+  {
+    path: "/offers_dash",
+    element: <OffersDashboard />,
+  },
+  {
+    path: "/update_offer/:id",
+    element: <UpdateOffers />,
+  },
+  {
+    path: "/referrals_dash",
+    element: <ReferralDashboard />,
+  },
+  {
+    path: "/add_referral",
+    element: <AddReferral />,
+  },
+  {
+    path: "/update_referral/:id",
+    element: <UpdateReferral />,
+  },
 
 
 

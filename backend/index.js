@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const MongoStore = require("connect-mongo");
+const path = require("path");
 const app = express();
 
 // Global variable to hold the user ID
@@ -10,6 +11,9 @@ let globalUserId = null; // Global variable
 // Import routes
 const AdminCustomersManage = require("./routes/UserRouter");
 const ImageHandling = require("./routes/ImageRouter");
+const OfferRouter = require('./routes/OfferRouter');
+const ReferralRouter = require('./routes/ReferralRoute');
+
 
 // Middleware
 app.use(express.json());
@@ -22,6 +26,11 @@ app.use(cors({
 
 app.use("/AdminCustomers", AdminCustomersManage);
 app.use("/ImageUploads", ImageHandling);
+app.use('/offers', OfferRouter);
+app.use('/referrals', ReferralRouter); // Add this line to use the ReferralRouter
+
+
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB connection
 mongoose.connect(process.env.MONGO_URI || "mongodb+srv://5gang:ocjaIzGYFjpYlih2@cluster0.zk7k9.mongodb.net/Wash_and_GO")
